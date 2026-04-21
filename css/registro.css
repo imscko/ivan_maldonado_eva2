@@ -1,0 +1,127 @@
+/* ================================
+   ESTILOS DEL FORMULARIO DE REGISTRO
+   Solo se usan clases, nunca IDs.
+   Los IDs se reservan para JavaScript.
+   ================================ */
+
+/* Fondo de la página de registro */
+.pagina-registro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a1a1a;
+    padding: 40px 20px;
+}
+
+/* Contenedor principal del formulario (tarjeta) */
+.formulario-contenedor {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 40px 35px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Título del formulario */
+.formulario-titulo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 25px;
+}
+
+/* Cada campo de entrada */
+.formulario-campo {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fafafa;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.formulario-campo::placeholder {
+    color: #999;
+}
+
+.formulario-campo:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Botón de envío */
+.formulario-boton {
+    width: 100%;
+    padding: 12px;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.15s;
+    margin-top: 5px;
+}
+
+.formulario-boton:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.formulario-boton:active {
+    transform: translateY(0);
+}
+
+/* Mensaje de validación */
+.formulario-mensaje {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #dc2626;
+    min-height: 20px;
+}
+
+/* Mensaje de éxito */
+.formulario-mensaje-exito {
+    color: #16a34a;
+}
+
+/* Enlace para volver al inicio */
+.formulario-enlace-volver {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.formulario-enlace-volver a {
+    color: #ff6600;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.formulario-enlace-volver a:hover {
+    color: #ff8533;
+    text-decoration: underline;
+}
+
+/* ================================
+   RESPONSIVO
+   ================================ */
+
+@media (max-width: 480px) {
+    .formulario-contenedor {
+        padding: 30px 20px;
+    }
+
+    .formulario-titulo {
+        font-size: 20px;
+    }
+}

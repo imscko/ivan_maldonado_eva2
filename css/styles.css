@@ -1,0 +1,494 @@
+/* ================================
+   ESTILOS GENERALES DEL DOCUMENTO
+   ================================ */
+
+/* Reseteo básico: quita márgenes y rellenos por defecto del navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Hace que padding y border se incluyan en el ancho total */
+}
+
+/* Estilos del cuerpo de la página */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    /* Fuente principal */
+    background-color: #1a1a1a;
+    /* Fondo negro oscuro */
+    color: #f0f0f0;
+    /* Texto blanco claro */
+    line-height: 1.6;
+    /* Espacio entre líneas para mejor lectura */
+}
+
+/* ================================
+   ENCABEZADO (HEADER)
+   ================================ */
+
+header {
+    background-color: #0d0d0d;
+    /* Negro más oscuro que el fondo */
+    padding: 15px 30px;
+    /* Espacio interno: arriba/abajo 15px, lados 30px */
+    display: flex;
+    /* Flexbox para alinear logo y menú en fila */
+    justify-content: space-between;
+    /* Logo a la izquierda, menú a la derecha */
+    align-items: center;
+    /* Centrado vertical */
+    border-bottom: 3px solid #ff6600;
+    /* Línea naranja abajo del header */
+    position: sticky;
+    /* Se queda fijo al hacer scroll */
+    top: 0;
+    z-index: 100;
+    /* Se muestra sobre el resto del contenido */
+}
+
+/* Logo: ícono + texto */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Espacio entre el ícono y el texto */
+}
+
+.logo-icon {
+    font-size: 28px;
+    /* Tamaño del emoji */
+}
+
+.logo-texto {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff6600;
+    /* Naranja Rockstar */
+    letter-spacing: 2px;
+    /* Espacio entre letras */
+    text-transform: uppercase;
+    /* Todo en mayúsculas */
+}
+
+/* ================================
+   NAVEGACIÓN (NAV)
+   ================================ */
+
+nav ul {
+    list-style: none;
+    /* Quita las viñetas de la lista */
+    display: flex;
+    /* Los elementos se colocan en fila horizontal */
+    gap: 25px;
+    /* Espacio entre cada enlace */
+}
+
+nav ul li a {
+    text-decoration: none;
+    /* Quita el subrayado de los enlaces */
+    color: #f0f0f0;
+    /* Color del texto */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    /* Mayúsculas */
+    padding: 8px 15px;
+    /* Espacio interno del enlace */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    transition: background-color 0.3s, color 0.3s;
+    /* Transición suave al pasar el mouse */
+}
+
+/* Efecto hover: cuando el mouse pasa sobre un enlace */
+nav ul li a:hover {
+    background-color: #ff6600;
+    /* Fondo naranja */
+    color: #0d0d0d;
+    /* Texto negro */
+}
+
+/* Botón de Registro en la navegación */
+.boton-registro {
+    background-color: #ff6600;
+    /* Fondo naranja para destacar */
+    color: #0d0d0d !important;
+    /* Texto negro */
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.boton-registro:hover {
+    background-color: #ff8533;
+    /* Naranja más claro al pasar mouse */
+}
+
+/* ================================
+   BANNER PRINCIPAL (HERO)
+   ================================ */
+
+.banner {
+    background-color: #ff6600;
+    /* Fondo naranja Rockstar */
+    color: #0d0d0d;
+    /* Texto negro para contraste */
+    text-align: center;
+    /* Texto centrado */
+    padding: 80px 20px;
+    /* Espacio interno grande para que destaque */
+}
+
+.banner h1 {
+    font-size: 42px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.banner p {
+    font-size: 18px;
+    max-width: 600px;
+    /* Ancho máximo del párrafo */
+    margin: 0 auto;
+    /* Centrado horizontal */
+}
+
+/* ================================
+   SECCIÓN DE TRUCOS
+   ================================ */
+
+.trucos {
+    padding: 60px 30px;
+    /* Espacio interno de la sección */
+}
+
+.trucos h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #ff6600;
+    /* Naranja */
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/* Grid: organiza las tarjetas en columnas */
+.trucos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columnas de igual tamaño */
+    gap: 25px;
+    /* Espacio entre tarjetas */
+    max-width: 900px;
+    /* Ancho máximo de la cuadrícula */
+    margin: 0 auto;
+    /* Centrado horizontal */
+}
+
+/* Cada tarjeta de truco */
+.tarjeta-truco {
+    background-color: #252525;
+    /* Fondo gris oscuro */
+    border: 2px solid #333;
+    /* Borde gris */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    padding: 25px;
+    transition: border-color 0.3s, transform 0.3s;
+    /* Transición suave */
+}
+
+/* Efecto hover en la tarjeta */
+.tarjeta-truco:hover {
+    border-color: #ff6600;
+    /* Borde naranja al pasar mouse */
+    transform: translateY(-5px);
+    /* Se eleva un poco */
+}
+
+.tarjeta-truco h3 {
+    color: #ff6600;
+    /* Título naranja */
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+/* Etiqueta de plataforma */
+.plataforma {
+    color: #888;
+    /* Gris claro */
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    /* Línea separadora */
+    padding-bottom: 10px;
+}
+
+/* Lista de trucos dentro de cada tarjeta */
+.lista-trucos {
+    list-style: none;
+    /* Sin viñetas */
+}
+
+.lista-trucos li {
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #2a2a2a;
+    /* Línea sutil entre cada truco */
+}
+
+.lista-trucos li:last-child {
+    border-bottom: none;
+    /* Quita la línea del último elemento */
+}
+
+.lista-trucos li strong {
+    color: #ff8533;
+    /* Naranja claro para el nombre del truco */
+}
+
+/* ================================
+   SECCIÓN SOBRE MÍ
+   ================================ */
+
+.sobre-mi {
+    padding: 60px 30px;
+    background-color: #222;
+    /* Fondo ligeramente diferente para separar secciones */
+}
+
+.sobre-mi h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #ff6600;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.sobre-mi-contenido {
+    max-width: 900px;
+    /* Un poco más ancho para dar espacio a la imagen */
+    margin: 0 auto;
+    /* Centrado */
+    display: flex;
+    /* Texto e imagen lado a lado */
+    align-items: center;
+    /* Centrado vertical */
+    gap: 40px;
+    /* Espacio entre texto e imagen */
+}
+
+/* Texto ocupa el espacio disponible */
+.sobre-mi-texto {
+    flex: 1;
+    /* Ocupa todo el espacio restante */
+}
+
+.sobre-mi-texto p {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #ccc;
+    /* Gris claro para el texto */
+}
+
+/* Imagen a la derecha */
+.sobre-mi-imagen {
+    flex-shrink: 0;
+    /* No se achica */
+    width: 250px;
+    /* Ancho fijo de la imagen */
+}
+
+.sobre-mi-imagen img {
+    width: 100%;
+    /* Ocupa todo el contenedor */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    border: 3px solid #ff6600;
+    /* Borde naranja */
+}
+
+.sobre-mi-contenido strong {
+    color: #ff6600;
+    /* Palabras destacadas en naranja */
+}
+
+/* ================================
+   SECCIÓN REDES SOCIALES
+   ================================ */
+
+.redes {
+    padding: 60px 30px;
+}
+
+.redes h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #ff6600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.redes-descripcion {
+    text-align: center;
+    color: #999;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+/* Grid para las tarjetas de redes */
+.redes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 columnas */
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Cada tarjeta de red social */
+.red-tarjeta {
+    display: flex;
+    flex-direction: column;
+    /* Contenido en columna vertical */
+    align-items: center;
+    text-align: center;
+    background-color: #252525;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 25px 15px;
+    text-decoration: none;
+    /* Sin subrayado porque es un enlace */
+    color: #f0f0f0;
+    transition: border-color 0.3s, transform 0.3s;
+}
+
+.red-tarjeta:hover {
+    transform: translateY(-5px);
+}
+
+/* Colores específicos para cada red social al hacer hover */
+.youtube:hover {
+    border-color: #ff0000;
+    /* Rojo YouTube */
+}
+
+.instagram:hover {
+    border-color: #e1306c;
+    /* Rosa Instagram */
+}
+
+.tiktok:hover {
+    border-color: #00f2ea;
+    /* Celeste TikTok */
+}
+
+.discord:hover {
+    border-color: #5865f2;
+    /* Morado Discord */
+}
+
+.twitter:hover {
+    border-color: #1da1f2;
+    /* Azul Twitter */
+}
+
+.twitch:hover {
+    border-color: #9146ff;
+    /* Morado Twitch */
+}
+
+/* Ícono grande de cada red */
+.red-icono {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+/* Nombre de la red */
+.red-nombre {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+/* Nombre de usuario */
+.red-usuario {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+/* Descripción de la red */
+.red-detalle {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+}
+
+/* ================================
+   PIE DE PÁGINA (FOOTER)
+   ================================ */
+
+footer {
+    background-color: #0d0d0d;
+    /* Mismo color que el header */
+    text-align: center;
+    padding: 25px;
+    border-top: 3px solid #ff6600;
+    /* Línea naranja arriba del footer */
+    color: #777;
+    /* Texto gris */
+    font-size: 14px;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+/* ================================
+   DISEÑO RESPONSIVO (MOBILE)
+   Si la pantalla es menor a 768px, se ajusta
+   ================================ */
+
+@media (max-width: 768px) {
+
+    /* El header se apila en columna */
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* El menú también se apila */
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Banner más pequeño */
+    .banner h1 {
+        font-size: 28px;
+    }
+
+    /* Trucos en 1 sola columna */
+    .trucos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Redes en 2 columnas */
+    .redes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Sobre mí: imagen debajo del texto en móvil */
+    .sobre-mi-contenido {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .sobre-mi-imagen {
+        width: 200px;
+        /* Más pequeña en móvil */
+    }
+}

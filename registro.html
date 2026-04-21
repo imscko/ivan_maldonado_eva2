@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Metadatos del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Registro</title>
+    <!-- Ícono de la pestaña del navegador (favicon) -->
+    <link rel="icon" href="imagenes/iconos o logo/hackerman.ico">
+    <!-- Hojas de estilo CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/registro.css">
+</head>
+
+<body>
+
+    <!-- ============ CONTENIDO DEL REGISTRO ============ -->
+    <div class="pagina-registro">
+
+        <!-- Formulario de registro -->
+        <form id="registroForm" class="formulario-contenedor">
+            <h3 class="formulario-titulo">Registro de Usuario</h3>
+
+            <input type="text" id="nombre" class="formulario-campo" placeholder="Nombre completo">
+            <input type="email" id="correo" class="formulario-campo" placeholder="Correo electrónico">
+            <input type="text" id="direccion" class="formulario-campo" placeholder="Dirección">
+            <input type="password" id="password" class="formulario-campo" placeholder="Contraseña">
+
+            <button type="submit" class="formulario-boton">Registrarse</button>
+
+            <p id="mensaje" class="formulario-mensaje"></p>
+
+            <!-- Enlace para volver a la página principal -->
+            <div class="formulario-enlace-volver">
+                <a href="index.html">← Volver al inicio</a>
+            </div>
+        </form>
+
+    </div>
+
+    <!-- Script de JavaScript -->
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
