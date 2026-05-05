@@ -191,13 +191,13 @@ nav a:hover {
    BANNER DE INICIO (HERO)
    ========================================================================== */
 .banner {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 0 20px;
+    padding: 100px 20px 80px;
     background: radial-gradient(circle at center, var(--bg-dark) 0%, var(--bg-darker) 100%);
     position: relative;
     overflow: hidden;
@@ -503,6 +503,191 @@ footer p {
 }
 
 /* ==========================================================================
+   BARRA DE BIENVENIDA (sesión activa)
+   ========================================================================== */
+/* Esta barra aparece debajo del header cuando un usuario está logueado.
+   Usa el mismo estilo cyberpunk con glassmorphism del resto de la página. */
+.barra-bienvenida {
+    position: fixed;
+    top: 80px;               /* Justo debajo del header (que mide 80px) */
+    width: 100%;
+    padding: 12px 5%;
+    background: rgba(0, 243, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 999;             /* Debajo del header (1000) pero encima del contenido */
+    animation: slideDown 0.5s ease-out;
+}
+
+/* Animación de entrada: la barra desliza desde arriba */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.barra-bienvenida span {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+/* Botón "×" para cerrar la barra */
+.cerrar-bienvenida {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.cerrar-bienvenida:hover {
+    color: var(--neon-magenta);
+    border-color: var(--neon-magenta);
+}
+
+/* ==========================================================================
+   CARRUSEL DE IMÁGENES (Slick Carousel) - Integrado en el Header/Banner
+   ========================================================================== */
+/* Contenedor del carrusel dentro del banner.
+   z-index: 1 para que aparezca sobre el fondo radial del banner. */
+.carrusel-header {
+    width: 100%;
+    max-width: 850px;
+    margin-top: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Contenedor principal del carrusel Slick.
+   Definimos un ancho máximo para que no ocupe toda la pantalla. */
+.carrusel-slick {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.15),
+                0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Cada slide individual dentro del carrusel */
+.carrusel-slide-inner {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Imagen del slide: ocupa todo el ancho del contenedor */
+.carrusel-slide-inner img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;        /* Recorta la imagen para llenar el espacio sin distorsionar */
+    display: block;
+    filter: brightness(0.8) contrast(1.1);  /* Efecto oscuro ligeramente contrastado */
+    transition: filter 0.5s ease;
+}
+
+/* Al pasar el mouse, la imagen se ilumina ligeramente */
+.carrusel-slide-inner:hover img {
+    filter: brightness(1) contrast(1.2);
+}
+
+/* Texto superpuesto sobre cada imagen (caption) */
+.carrusel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 25px;
+    /* Degradado de transparente a negro para legibilidad del texto */
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+    text-align: center;
+}
+
+.carrusel-caption h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 243, 255, 0.4);
+    margin-bottom: 5px;
+    text-transform: none;
+}
+
+.carrusel-caption p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ---------- Personalización de las flechas de Slick ---------- */
+/* Slick genera automáticamente botones .slick-prev y .slick-next.
+   Aquí les damos el estilo neón del tema cyberpunk. */
+.carrusel-slick .slick-prev,
+.carrusel-slick .slick-next {
+    width: 45px;
+    height: 45px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.carrusel-slick .slick-prev { left: 15px; }
+.carrusel-slick .slick-next { right: 15px; }
+
+.carrusel-slick .slick-prev:hover,
+.carrusel-slick .slick-next:hover {
+    background: rgba(0, 243, 255, 0.2);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+}
+
+/* Las flechas internas de Slick (::before) */
+.carrusel-slick .slick-prev::before,
+.carrusel-slick .slick-next::before {
+    font-size: 22px;
+    color: var(--neon-cyan);
+    opacity: 1;
+}
+
+/* ---------- Personalización de los puntos (dots) de Slick ---------- */
+/* Slick genera una lista de puntos para navegar entre slides.
+   Los personalizamos para que tengan efecto neón. */
+.carrusel-slick .slick-dots {
+    bottom: -40px;
+}
+
+.carrusel-slick .slick-dots li button::before {
+    font-size: 10px;
+    color: var(--text-muted);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+/* Punto activo: brilla en cyan neón */
+.carrusel-slick .slick-dots li.slick-active button::before {
+    color: var(--neon-cyan);
+    opacity: 1;
+    text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* ==========================================================================
    RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
@@ -531,5 +716,20 @@ footer p {
     
     body {
         padding-top: 150px;
+    }
+
+    /* Carrusel responsive */
+    .carrusel-slide-inner img {
+        height: 250px;
+    }
+
+    .carrusel-caption h3 {
+        font-size: 1.3rem;
+    }
+
+    .barra-bienvenida {
+        top: auto;
+        position: relative;
+        margin-top: 0;
     }
 }

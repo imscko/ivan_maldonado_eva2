@@ -89,11 +89,28 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // --- PASO 10: SI TODO ES CORRECTO, MOSTRAR ÉXITO ---
+        // --- PASO 10: SI TODO ES CORRECTO, GUARDAR EN LOCALSTORAGE Y MOSTRAR ÉXITO ---
         // Si llegamos hasta aquí, significa que todas las validaciones pasaron.
+        //
+        // localStorage.setItem("clave", "valor") guarda un dato en el almacenamiento
+        // del navegador. Este dato persiste incluso si se cierra la pestaña o el navegador.
+        //
+        // Como localStorage solo acepta strings (cadenas de texto), usamos
+        // JSON.stringify() para convertir nuestro objeto JavaScript a un string JSON.
+        //
+        // Ejemplo: { nombre: "Ivan", correo: "ivan@mail.com", password: "12345678" }
+        // Se convierte en: '{"nombre":"Ivan","correo":"ivan@mail.com","password":"12345678"}'
+        var datosUsuario = {
+            nombre: valorUsuario,
+            correo: valorCorreo,
+            password: valorPassword
+        };
+
+        localStorage.setItem("usuarioRegistrado", JSON.stringify(datosUsuario));
+
         // Mostramos un mensaje de éxito y le agregamos la clase CSS de éxito
         // para que se vea en color cyan (neón).
-        mensaje.textContent = "Registro exitoso. ¡Bienvenido!";
+        mensaje.textContent = "Registro exitoso. ¡Bienvenido, " + valorUsuario + "!";
         mensaje.classList.add("formulario-mensaje-exito");
     });
 

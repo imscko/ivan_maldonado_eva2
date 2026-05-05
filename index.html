@@ -16,6 +16,13 @@
     <link rel="icon" href="imagenes/iconos o logo/hackerman.ico">
     <!-- Enlace a la hoja de estilos CSS -->
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- jQuery (librería base necesaria para Slick Carousel) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Slick Carousel: CSS principal y tema visual -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
 </head>
 
 <body>
@@ -34,19 +41,103 @@
                 <li><a href="#trucos">Trucos</a></li>
                 <li><a href="#sobre-mi">Sobre Mí</a></li>
                 <li><a href="#redes">Contacto</a></li>
-                <li><a href="registro.html" class="boton-registro">Registro</a></li>
-                <li><a href="login.html" class="boton-registro">Login</a></li>
+                <li><a href="registro.html" class="boton-registro" id="btnRegistro">Registro</a></li>
+                <li><a href="login.html" class="boton-registro" id="btnLogin">Login</a></li>
                 <li><a href="contacto.html" class="boton-registro">Contacto Form</a></li>
+                <!-- Botón de cerrar sesión (oculto por defecto, se muestra al loguearse) -->
+                <li><a href="#" class="boton-registro" id="btnLogout" style="display:none; border-color: var(--neon-cyan); color: var(--neon-cyan);">Cerrar Sesión</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- ============ SECCIÓN PRINCIPAL / BANNER ============ -->
+    <!-- ============ BARRA DE BIENVENIDA (oculta por defecto) ============ -->
+    <!-- Se muestra dinámicamente con JavaScript cuando el usuario está logueado -->
+    <div id="barraBienvenida" class="barra-bienvenida" style="display: none;">
+        <span id="mensajeBienvenida"></span>
+        <button id="cerrarBienvenida" class="cerrar-bienvenida">&times;</button>
+    </div>
+
+    <!-- ============ SECCIÓN PRINCIPAL / BANNER CON CARRUSEL ============ -->
     <main>
 
         <section id="inicio" class="banner">
             <h1>Trucos y Claves de Videojuegos</h1>
             <p>Los mejores códigos secretos para desbloquear todo en tus juegos favoritos.</p>
+
+            <!-- ============ CARRUSEL EN EL HEADER / BANNER ============ -->
+            <!-- El carrusel está integrado dentro del banner para que sea
+                 lo primero que el usuario vea al entrar a la página -->
+            <div class="carrusel-header">
+                <div class="carrusel-slick">
+
+                    <!-- Slide 1: Usuario-ROot.png -->
+                    <div class="carrusel-slide">
+                        <div class="carrusel-slide-inner">
+                            <img src="imagenes/iconos o logo/Usuario-ROot.png" alt="Hacker Root - Terminal">
+                            <div class="carrusel-caption">
+                                <h3>#root</h3>
+                                <p>Acceso total al sistema</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: hackerman.ico -->
+                    <div class="carrusel-slide">
+                        <div class="carrusel-slide-inner">
+                            <img src="imagenes/iconos o logo/hackerman.ico" alt="Hackerman - Ícono">
+                            <div class="carrusel-caption">
+                                <h3>HACKERMAN</h3>
+                                <p>El hacker definitivo</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Usuario-ROot.png -->
+                    <div class="carrusel-slide">
+                        <div class="carrusel-slide-inner">
+                            <img src="imagenes/iconos o logo/Usuario-ROot.png" alt="Hacker Root - Consola">
+                            <div class="carrusel-caption">
+                                <h3>sudo rm -rf /</h3>
+                                <p>El poder absoluto del terminal</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: hackerman.ico -->
+                    <div class="carrusel-slide">
+                        <div class="carrusel-slide-inner">
+                            <img src="imagenes/iconos o logo/hackerman.ico" alt="Hackerman - Seguridad">
+                            <div class="carrusel-caption">
+                                <h3>FIREWALL BYPASS</h3>
+                                <p>Sin barreras para el hacker</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 5: Usuario-ROot.png -->
+                    <div class="carrusel-slide">
+                        <div class="carrusel-slide-inner">
+                            <img src="imagenes/iconos o logo/Usuario-ROot.png" alt="Hacker Root - Código">
+                            <div class="carrusel-caption">
+                                <h3>chmod 777</h3>
+                                <p>Permisos sin límites</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 6: hackerman.ico -->
+                    <div class="carrusel-slide">
+                        <div class="carrusel-slide-inner">
+                            <img src="imagenes/iconos o logo/hackerman.ico" alt="Hackerman - Matrix">
+                            <div class="carrusel-caption">
+                                <h3>HACK THE PLANET</h3>
+                                <p>La red es nuestro territorio</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </section>
 
         <!-- ============ SECCIÓN DE TRUCOS ============ -->
@@ -163,6 +254,15 @@
         <p>&copy; 2026 GameCodes - Iván | Todos los derechos reservados a mi mismo</p>
         <p>Proyecto de evaluación - Diseño Web</p>
     </footer>
+
+    <!-- ============ SCRIPTS ============ -->
+
+    <!-- Slick Carousel: Plugin de jQuery para crear carruseles -->
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <!-- Script de inicialización del carrusel y sistema de sesión -->
+    <script src="js/carrusel.js"></script>
+    <script src="js/sesion.js"></script>
 
 </body>
 

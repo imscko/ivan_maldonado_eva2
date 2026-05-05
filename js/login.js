@@ -49,11 +49,52 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // --- PASO 8: SI TODO ESTÁ CORRECTO, MOSTRAR ÉXITO ---
-        // Si los formatos son correctos, mostramos un mensaje de éxito
-        // como indica el documento: "mostrar un mensaje de éxito si los formatos son correctos".
-        mensaje.textContent = "Inicio de sesión exitoso. ¡Bienvenido!";
-        mensaje.classList.add("formulario-mensaje-exito");
+        // --- PASO 8: BUSCAR EL USUARIO REGISTRADO EN LOCALSTORAGE ---
+        // localStorage es un almacenamiento del navegador que persiste datos
+        // incluso después de cerrar la pestaña.
+        //
+        // En registro.js, cuando un usuario se registra exitosamente,
+        // guardamos sus datos como un string JSON con la clave "usuarioRegistrado".
+        //
+        // Aquí recuperamos ese dato con localStorage.getItem() y lo convertimos
+        // de nuevo a objeto con JSON.parse().
+        var datosGuardados = localStorage.getItem("usuarioRegistrado");
+
+        if (datosGuardados) {
+            // JSON.parse() convierte el string JSON de vuelta a un objeto JavaScript
+            var usuario = JSON.parse(datosGuardados);
+
+            // --- PASO 9: VERIFICAR CREDENCIALES ---
+            // Comparamos el correo y contraseña ingresados con los datos guardados.
+            if (valorCorreo === usuario.correo && valorPassword === usuario.password) {
+
+                // --- PASO 10: GUARDAR SESIÓN ACTIVA ---
+                // Guardamos el nombre de usuario en localStorage con la clave "usuarioLogueado".
+                // Este valor será leído por sesion.js en la página index.html
+                // para mostrar la barra de bienvenida con "¡Hola! (usuario)".
+                localStorage.setItem("usuarioLogueado", usuario.nombre);
+
+                // Mostrar mensaje de éxito personalizado con el nombre del usuario
+                mensaje.textContent = "¡Hola! " + usuario.nombre + " - Inicio de sesión exitoso.";
+                mensaje.classList.add("formulario-mensaje-exito");
+
+                // Redirigir a la página principal después de 2 segundos
+                // setTimeout ejecuta una función después de un tiempo determinado (en ms).
+                setTimeout(function () {
+                    window.location.href = "index.html";
+                }, 2000);
+
+                return;
+            } else {
+                // Las credenciales no coinciden con las registradas
+                mensaje.textContent = "Correo o contraseña incorrectos.";
+                return;
+            }
+        }
+
+        // --- PASO 11: SI NO HAY USUARIO REGISTRADO ---
+        // Si no existe ningún dato en localStorage, no hay usuario registrado aún.
+        mensaje.textContent = "No hay usuarios registrados. Regístrate primero.";
     });
 
 });
