@@ -1,100 +1,141 @@
 // ================================
 // LÓGICA DEL FORMULARIO DE LOGIN
 // ================================
+// Este archivo maneja la validación e inicio de sesión.
+// Busca las credenciales ingresadas dentro del arreglo de usuarios
+// registrados que se almacena en localStorage.
+// El código está organizado en funciones modulares.
 
-// Esperamos a que el documento HTML esté completamente cargado.
 document.addEventListener("DOMContentLoaded", function () {
 
     // --- PASO 1: CAPTURAR LOS ELEMENTOS DEL DOM ---
-    // Usamos document.getElementById() para obtener cada elemento
-    // que necesitamos del HTML, usando sus IDs.
-    var formulario = document.getElementById("loginForm");      // El formulario de login
-    var correo = document.getElementById("correoLogin");        // Campo de email
-    var password = document.getElementById("passwordLogin");    // Campo de contraseña
-    var mensaje = document.getElementById("mensajeLogin");      // Elemento donde mostramos errores/éxito
+    var formulario = document.getElementById("loginForm");
+    var correo = document.getElementById("correoLogin");
+    var password = document.getElementById("passwordLogin");
+    var mensaje = document.getElementById("mensajeLogin");
 
-    // --- PASO 2: ESCUCHAR EL EVENTO "SUBMIT" ---
-    // Cuando el usuario hace clic en "Ingresar", interceptamos el envío.
+    // ================================================================
+    // FUNCIONES MODULARES
+    // ================================================================
+
+    // --- FUNCIÓN: validarCamposVacios() ---
+    // Verifica que los campos de login no estén vacíos.
+    // Retorna true si ambos tienen contenido, false si alguno está vacío.
+    function validarCamposVacios(valorCorreo, valorPassword) {
+        if (valorCorreo === "" || valorPassword === "") {
+            return false;
+        }
+        return true;
+    }
+
+    // --- FUNCIÓN: validarEmail() ---
+    // Verifica que el correo tenga formato válido usando regex.
+    // Retorna true si es válido, false si no.
+    function validarEmail(correoValor) {
+        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regexEmail.test(correoValor);
+    }
+
+    // --- FUNCIÓN: obtenerListaUsuarios() ---
+    // Lee el arreglo de usuarios registrados desde localStorage.
+    // JSON.parse() convierte el string JSON de vuelta a un array.
+    // Si no existe, retorna un arreglo vacío [].
+    function obtenerListaUsuarios() {
+        var datos = localStorage.getItem("listaUsuarios");
+        if (datos) {
+            return JSON.parse(datos);
+        }
+        return [];
+    }
+
+    // --- FUNCIÓN: buscarUsuario() ---
+    // Busca dentro del arreglo de usuarios si existe uno que coincida
+    // con el correo y contraseña ingresados.
+    //
+    // Recorre el arreglo con un bucle for, comparando cada elemento.
+    // Si encuentra coincidencia, retorna el objeto usuario.
+    // Si no encuentra coincidencia, retorna null.
+    function buscarUsuario(listaUsuarios, valorCorreo, valorPassword) {
+        for (var i = 0; i < listaUsuarios.length; i++) {
+            if (listaUsuarios[i].correo === valorCorreo && listaUsuarios[i].password === valorPassword) {
+                return listaUsuarios[i]; // Usuario encontrado
+            }
+        }
+        return null; // No se encontró coincidencia
+    }
+
+    // --- FUNCIÓN: guardarSesion() ---
+    // Guarda el nombre del usuario logueado en localStorage.
+    // Este dato será leído por sesion.js para mostrar la barra de bienvenida.
+    function guardarSesion(nombreUsuario) {
+        localStorage.setItem("usuarioLogueado", nombreUsuario);
+    }
+
+    // --- FUNCIÓN: actualizarDOM() ---
+    // Actualiza un elemento del DOM para mostrar mensajes al usuario.
+    function actualizarDOM(elemento, texto, esExito) {
+        elemento.textContent = texto;
+        elemento.className = "formulario-mensaje";
+        if (esExito) {
+            elemento.classList.add("formulario-mensaje-exito");
+        }
+    }
+
+    // --- FUNCIÓN: redirigirAlInicio() ---
+    // Redirige al usuario a la página principal después de 2 segundos.
+    // setTimeout ejecuta una función después del tiempo indicado (en ms).
+    function redirigirAlInicio() {
+        setTimeout(function () {
+            window.location.href = "index.html";
+        }, 2000);
+    }
+
+    // ================================================================
+    // EVENTO SUBMIT - PROCESO DE LOGIN
+    // ================================================================
+
     formulario.addEventListener("submit", function (event) {
 
-        // --- PASO 3: PREVENIR EL COMPORTAMIENTO POR DEFECTO ---
-        // Evitamos que la página se recargue al enviar el formulario.
+        // Prevenir el comportamiento por defecto (recarga de página)
         event.preventDefault();
 
-        // --- PASO 4: OBTENER LOS VALORES INGRESADOS ---
-        // .value captura lo que el usuario escribió.
-        // .trim() quita espacios al inicio y al final.
+        // Obtener los valores ingresados
         var valorCorreo = correo.value.trim();
         var valorPassword = password.value;
 
-        // --- PASO 5: LIMPIAR MENSAJES ANTERIORES ---
-        // Reseteamos el texto y las clases CSS del mensaje.
-        mensaje.textContent = "";
-        mensaje.className = "formulario-mensaje";
-
-        // --- PASO 6: VALIDAR CAMPOS OBLIGATORIOS ---
-        // Si alguno de los dos campos está vacío, mostramos error.
-        if (valorCorreo === "" || valorPassword === "") {
-            mensaje.textContent = "Todos los campos son obligatorios.";
-            return; // Detenemos aquí la ejecución
-        }
-
-        // --- PASO 7: VALIDAR FORMATO DEL EMAIL ---
-        // Usamos la misma expresión regular que en el registro
-        // para verificar que el email tenga formato válido.
-        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!regexEmail.test(valorCorreo)) {
-            mensaje.textContent = "El formato del correo electrónico no es válido.";
+        // Validación 1: Campos vacíos
+        if (!validarCamposVacios(valorCorreo, valorPassword)) {
+            actualizarDOM(mensaje, "Todos los campos son obligatorios.", false);
             return;
         }
 
-        // --- PASO 8: BUSCAR EL USUARIO REGISTRADO EN LOCALSTORAGE ---
-        // localStorage es un almacenamiento del navegador que persiste datos
-        // incluso después de cerrar la pestaña.
-        //
-        // En registro.js, cuando un usuario se registra exitosamente,
-        // guardamos sus datos como un string JSON con la clave "usuarioRegistrado".
-        //
-        // Aquí recuperamos ese dato con localStorage.getItem() y lo convertimos
-        // de nuevo a objeto con JSON.parse().
-        var datosGuardados = localStorage.getItem("usuarioRegistrado");
-
-        if (datosGuardados) {
-            // JSON.parse() convierte el string JSON de vuelta a un objeto JavaScript
-            var usuario = JSON.parse(datosGuardados);
-
-            // --- PASO 9: VERIFICAR CREDENCIALES ---
-            // Comparamos el correo y contraseña ingresados con los datos guardados.
-            if (valorCorreo === usuario.correo && valorPassword === usuario.password) {
-
-                // --- PASO 10: GUARDAR SESIÓN ACTIVA ---
-                // Guardamos el nombre de usuario en localStorage con la clave "usuarioLogueado".
-                // Este valor será leído por sesion.js en la página index.html
-                // para mostrar la barra de bienvenida con "¡Hola! (usuario)".
-                localStorage.setItem("usuarioLogueado", usuario.nombre);
-
-                // Mostrar mensaje de éxito personalizado con el nombre del usuario
-                mensaje.textContent = "¡Hola! " + usuario.nombre + " - Inicio de sesión exitoso.";
-                mensaje.classList.add("formulario-mensaje-exito");
-
-                // Redirigir a la página principal después de 2 segundos
-                // setTimeout ejecuta una función después de un tiempo determinado (en ms).
-                setTimeout(function () {
-                    window.location.href = "index.html";
-                }, 2000);
-
-                return;
-            } else {
-                // Las credenciales no coinciden con las registradas
-                mensaje.textContent = "Correo o contraseña incorrectos.";
-                return;
-            }
+        // Validación 2: Formato de email
+        if (!validarEmail(valorCorreo)) {
+            actualizarDOM(mensaje, "El formato del correo electrónico no es válido.", false);
+            return;
         }
 
-        // --- PASO 11: SI NO HAY USUARIO REGISTRADO ---
-        // Si no existe ningún dato en localStorage, no hay usuario registrado aún.
-        mensaje.textContent = "No hay usuarios registrados. Regístrate primero.";
+        // Obtener el arreglo de usuarios registrados
+        var listaUsuarios = obtenerListaUsuarios();
+
+        // Verificar si hay usuarios registrados
+        if (listaUsuarios.length === 0) {
+            actualizarDOM(mensaje, "No hay usuarios registrados. Regístrate primero.", false);
+            return;
+        }
+
+        // Buscar el usuario en el arreglo
+        var usuarioEncontrado = buscarUsuario(listaUsuarios, valorCorreo, valorPassword);
+
+        if (usuarioEncontrado) {
+            // Login exitoso: guardar sesión y redirigir
+            guardarSesion(usuarioEncontrado.nombre);
+            actualizarDOM(mensaje, "¡Hola! " + usuarioEncontrado.nombre + " - Inicio de sesión exitoso.", true);
+            redirigirAlInicio();
+        } else {
+            // Credenciales incorrectas
+            actualizarDOM(mensaje, "Correo o contraseña incorrectos.", false);
+        }
     });
 
 });

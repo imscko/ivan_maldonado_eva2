@@ -1,77 +1,92 @@
 // ================================
-// INICIALIZACIÓN DEL CARRUSEL (jQuery Slick)
+// CARRUSEL DE IMÁGENES - JAVASCRIPT PURO
 // ================================
+// Este archivo implementa un carrusel funcional SIN librerías externas.
+// Modifica dinámicamente el DOM (nodos, atributos y clases) para
+// cambiar la imagen visible cuando el usuario hace clic en los botones.
 
-// $(document).ready() es el equivalente en jQuery de
-// document.addEventListener("DOMContentLoaded", ...).
-// Espera a que el DOM esté completamente cargado antes de ejecutar el código.
+// Esperamos a que el DOM esté completamente cargado
+document.addEventListener("DOMContentLoaded", function () {
 
-$(document).ready(function () {
+    // --- PASO 1: CAPTURAR ELEMENTOS DEL DOM ---
+    // Obtenemos referencias a los elementos HTML que necesitamos manipular.
+    var slides = document.querySelectorAll(".carrusel-slide");   // Todos los slides (NodeList)
+    var btnAnterior = document.getElementById("btnAnterior");    // Botón "Anterior"
+    var btnSiguiente = document.getElementById("btnSiguiente");  // Botón "Siguiente"
+    var indicador = document.getElementById("carruselIndicador"); // Indicador "1 / 3"
 
-    // --- PASO 1: SELECCIONAR EL CONTENEDOR DEL CARRUSEL ---
-    // $(".carrusel-slick") usa jQuery para seleccionar el div con la clase "carrusel-slick".
-    // El signo $ es un atajo de jQuery. Lo que está dentro de las comillas es un selector CSS.
+    // Variable que guarda el índice del slide actualmente visible (empieza en 0)
+    var indiceActual = 0;
 
-    // --- PASO 2: LLAMAR AL MÉTODO .slick() ---
-    // .slick() es un método que viene del plugin Slick Carousel.
-    // Convierte cualquier contenedor con hijos <div> en un carrusel interactivo.
-    // Le pasamos un objeto {} con las opciones de configuración.
+    // --- PASO 2: FUNCIÓN cambiarImagen() ---
+    // Esta función es el núcleo del carrusel. Modifica el DOM dinámicamente:
+    // - Quita la clase "activo" de todos los slides (los oculta)
+    // - Agrega la clase "activo" al slide correspondiente al nuevo índice (lo muestra)
+    // - Actualiza el texto del indicador
+    //
+    // Parámetro: nuevoIndice (number) - el índice del slide que queremos mostrar
+    function cambiarImagen(nuevoIndice) {
 
-    $(".carrusel-slick").slick({
+        // Recorremos todos los slides para quitar la clase "activo"
+        // forEach ejecuta una función por cada elemento del NodeList
+        for (var i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("activo");
+        }
 
-        // --- OPCIONES DE COMPORTAMIENTO ---
+        // Actualizamos el índice actual con el nuevo valor
+        indiceActual = nuevoIndice;
 
-        // autoplay: el carrusel avanza solo sin que el usuario haga clic
-        autoplay: true,
+        // Agregamos la clase "activo" al slide que debe mostrarse
+        // Esto modifica dinámicamente los atributos de clase del nodo DOM
+        slides[indiceActual].classList.add("activo");
 
-        // autoplaySpeed: tiempo en milisegundos entre cada transición (3 segundos)
-        autoplaySpeed: 3000,
+        // Actualizamos el texto del indicador (ej: "2 / 3")
+        actualizarIndicador();
+    }
 
-        // speed: duración en ms de la animación de transición (800ms = 0.8 segundos)
-        speed: 800,
+    // --- PASO 3: FUNCIÓN actualizarIndicador() ---
+    // Modifica el contenido de texto del elemento indicador en el DOM.
+    // Muestra la posición actual del slide (índice + 1 porque los arrays empiezan en 0)
+    function actualizarIndicador() {
+        indicador.textContent = (indiceActual + 1) + " / " + slides.length;
+    }
 
-        // fade: usa una transición de desvanecimiento en lugar de deslizar
-        fade: true,
+    // --- PASO 4: FUNCIÓN irAnterior() ---
+    // Calcula el índice del slide anterior y llama a cambiarImagen().
+    // Si estamos en el primer slide (índice 0), vuelve al último.
+    function irAnterior() {
+        var nuevoIndice;
+        if (indiceActual === 0) {
+            nuevoIndice = slides.length - 1; // Ir al último slide
+        } else {
+            nuevoIndice = indiceActual - 1;  // Ir al slide anterior
+        }
+        cambiarImagen(nuevoIndice);
+    }
 
-        // cssEase: tipo de curva de animación CSS para la transición
-        cssEase: "ease-in-out",
+    // --- PASO 5: FUNCIÓN irSiguiente() ---
+    // Calcula el índice del slide siguiente y llama a cambiarImagen().
+    // Si estamos en el último slide, vuelve al primero (bucle infinito).
+    function irSiguiente() {
+        var nuevoIndice;
+        if (indiceActual === slides.length - 1) {
+            nuevoIndice = 0;                 // Volver al primer slide
+        } else {
+            nuevoIndice = indiceActual + 1;  // Ir al slide siguiente
+        }
+        cambiarImagen(nuevoIndice);
+    }
 
-        // --- OPCIONES DE NAVEGACIÓN ---
+    // --- PASO 6: ASIGNAR EVENTOS A LOS BOTONES ---
+    // addEventListener conecta los clics de los botones con nuestras funciones.
+    // Al hacer clic en "Anterior", se ejecuta irAnterior().
+    // Al hacer clic en "Siguiente", se ejecuta irSiguiente().
+    btnAnterior.addEventListener("click", irAnterior);
+    btnSiguiente.addEventListener("click", irSiguiente);
 
-        // dots: muestra puntos de navegación debajo del carrusel
-        dots: true,
+    // --- PASO 7: AUTOPLAY (cambio automático cada 4 segundos) ---
+    // setInterval ejecuta una función repetidamente en un intervalo de tiempo.
+    // Aquí avanzamos automáticamente al siguiente slide cada 4000ms (4 segundos).
+    setInterval(irSiguiente, 4000);
 
-        // arrows: muestra flechas de navegación a los lados
-        arrows: true,
-
-        // infinite: el carrusel se repite en bucle infinito
-        infinite: true,
-
-        // pauseOnHover: pausa el autoplay cuando el mouse está encima
-        pauseOnHover: true,
-
-        // --- OPCIONES DE VISUALIZACIÓN ---
-
-        // slidesToShow: cuántos slides se ven al mismo tiempo
-        slidesToShow: 1,
-
-        // slidesToScroll: cuántos slides se avanzan por transición
-        slidesToScroll: 1,
-
-        // adaptiveHeight: ajusta la altura del carrusel al contenido del slide activo
-        adaptiveHeight: true,
-
-        // --- RESPONSIVE: AJUSTES PARA PANTALLAS PEQUEÑAS ---
-        // responsive es un array de objetos con breakpoints.
-        // Cada objeto define nuevas opciones cuando la pantalla es menor al breakpoint dado.
-        responsive: [
-            {
-                breakpoint: 768, // Si la pantalla es menor a 768px...
-                settings: {
-                    arrows: false, // ...ocultamos las flechas (para móvil)
-                    dots: true     // ...mantenemos los puntos
-                }
-            }
-        ]
-    });
 });

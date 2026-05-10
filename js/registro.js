@@ -1,117 +1,168 @@
 // ================================
 // LÓGICA DEL FORMULARIO DE REGISTRO
 // ================================
+// Este archivo maneja la validación y registro de nuevos usuarios.
+// El código está organizado en funciones modulares para cumplir
+// con los principios de reutilización y claridad.
+//
+// Estructuras de datos utilizadas:
+// - Objeto: para representar a cada usuario { nombre, correo, password }
+// - Arreglo (Array): para almacenar la lista de todos los inscritos
 
-// Esperamos a que el documento HTML esté completamente cargado
-// antes de ejecutar cualquier código JavaScript.
-// Esto asegura que todos los elementos del DOM existan cuando los busquemos.
 document.addEventListener("DOMContentLoaded", function () {
 
     // --- PASO 1: CAPTURAR LOS ELEMENTOS DEL DOM ---
     // Usamos document.getElementById() para obtener una referencia
     // a cada elemento HTML que necesitamos manipular.
-    // Los IDs deben coincidir exactamente con los del HTML.
+    var formulario = document.getElementById("registroForm");
+    var usuario = document.getElementById("usuario");
+    var correo = document.getElementById("correoRegistro");
+    var password = document.getElementById("passwordRegistro");
+    var confirmar = document.getElementById("confirmarPassword");
+    var mensaje = document.getElementById("mensajeRegistro");
 
-    var formulario = document.getElementById("registroForm");       // El formulario completo
-    var usuario = document.getElementById("usuario");               // Campo de usuario
-    var correo = document.getElementById("correoRegistro");         // Campo de email
-    var password = document.getElementById("passwordRegistro");     // Campo de contraseña
-    var confirmar = document.getElementById("confirmarPassword");   // Campo de confirmar contraseña
-    var mensaje = document.getElementById("mensajeRegistro");       // Elemento <p> donde mostramos errores/éxito
+    // ================================================================
+    // FUNCIONES MODULARES
+    // ================================================================
 
-    // --- PASO 2: ESCUCHAR EL EVENTO "SUBMIT" DEL FORMULARIO ---
-    // Cuando el usuario hace clic en "Registrarse", el formulario dispara
-    // el evento "submit". Nosotros lo interceptamos con addEventListener.
+    // --- FUNCIÓN: validarCamposVacios() ---
+    // Verifica que ningún campo obligatorio esté vacío.
+    // Recibe los 4 valores como parámetros.
+    // Retorna true si todos tienen contenido, false si alguno está vacío.
+    function validarCamposVacios(valorUsuario, valorCorreo, valorPassword, valorConfirmar) {
+        if (valorUsuario === "" || valorCorreo === "" || valorPassword === "" || valorConfirmar === "") {
+            return false;
+        }
+        return true;
+    }
+
+    // --- FUNCIÓN: validarEmail() ---
+    // Verifica que el correo electrónico tenga un formato válido.
+    // Usa una expresión regular (regex) para validar el patrón.
+    //
+    // Desglose del regex /^[^\s@]+@[^\s@]+\.[^\s@]+$/:
+    //   ^          = inicio del texto
+    //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
+    //   @          = el símbolo arroba (obligatorio)
+    //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
+    //   \.         = un punto literal (obligatorio)
+    //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
+    //   $          = fin del texto
+    //
+    // Retorna true si el formato es válido, false si no lo es.
+    function validarEmail(correoValor) {
+        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regexEmail.test(correoValor);
+    }
+
+    // --- FUNCIÓN: validarPassword() ---
+    // Verifica que la contraseña cumpla con los requisitos de seguridad:
+    // 1. Debe tener al menos 8 caracteres
+    // 2. Debe coincidir con la confirmación
+    //
+    // Retorna null si no hay error, o un string con el mensaje de error.
+    function validarPassword(valorPassword, valorConfirmar) {
+        if (valorPassword.length < 8) {
+            return "La contraseña debe tener al menos 8 caracteres.";
+        }
+        if (valorPassword !== valorConfirmar) {
+            return "Las contraseñas no coinciden.";
+        }
+        return null; // Sin errores
+    }
+
+    // --- FUNCIÓN: crearObjetoUsuario() ---
+    // Crea un objeto JavaScript que representa a un usuario.
+    // Este es la estructura de datos que se guarda en el arreglo.
+    //
+    // Retorna un objeto con las propiedades: nombre, correo, password
+    function crearObjetoUsuario(nombre, correoUsuario, passwordUsuario) {
+        var datosUsuario = {
+            nombre: nombre,
+            correo: correoUsuario,
+            password: passwordUsuario
+        };
+        return datosUsuario;
+    }
+
+    // --- FUNCIÓN: guardarUsuario() ---
+    // Guarda un nuevo usuario en el arreglo (array) de inscritos.
+    //
+    // ESTRUCTURA DE DATOS: Arreglo (Array)
+    // En localStorage guardamos un ARREGLO de objetos usuario.
+    // Cada vez que alguien se registra, se agrega (push) al array.
+    //
+    // JSON.parse() convierte el string guardado de vuelta a un array.
+    // JSON.stringify() convierte el array a string para guardarlo.
+    //
+    // Si no existe el arreglo todavía, se crea uno vacío con [].
+    function guardarUsuario(datosUsuario) {
+        // Leer el arreglo existente de localStorage (o crear uno vacío)
+        var listaUsuarios = JSON.parse(localStorage.getItem("listaUsuarios")) || [];
+
+        // Agregar el nuevo usuario al final del arreglo con push()
+        listaUsuarios.push(datosUsuario);
+
+        // Guardar el arreglo actualizado en localStorage
+        localStorage.setItem("listaUsuarios", JSON.stringify(listaUsuarios));
+    }
+
+    // --- FUNCIÓN: actualizarDOM() ---
+    // Actualiza el contenido de un elemento del DOM para mostrar
+    // mensajes de error o éxito al usuario.
+    //
+    // Parámetros:
+    // - elemento: el nodo del DOM donde mostrar el mensaje
+    // - texto: el texto del mensaje
+    // - esExito: boolean, true si es mensaje de éxito, false si es error
+    function actualizarDOM(elemento, texto, esExito) {
+        elemento.textContent = texto;
+        elemento.className = "formulario-mensaje";
+        if (esExito) {
+            elemento.classList.add("formulario-mensaje-exito");
+        }
+    }
+
+    // ================================================================
+    // EVENTO SUBMIT - VALIDACIÓN COMPLETA
+    // ================================================================
+
     formulario.addEventListener("submit", function (event) {
 
-        // --- PASO 3: PREVENIR EL COMPORTAMIENTO POR DEFECTO ---
-        // Por defecto, un formulario recarga la página al enviarse.
-        // Con event.preventDefault() cancelamos eso para manejar
-        // la validación nosotros mismos con JavaScript.
+        // Prevenir el comportamiento por defecto (recarga de página)
         event.preventDefault();
 
-        // --- PASO 4: OBTENER LOS VALORES INGRESADOS ---
-        // .value nos da el texto que el usuario escribió en cada campo.
-        // .trim() elimina los espacios en blanco al inicio y al final.
+        // Obtener los valores ingresados por el usuario
         var valorUsuario = usuario.value.trim();
         var valorCorreo = correo.value.trim();
         var valorPassword = password.value;
         var valorConfirmar = confirmar.value;
 
-        // --- PASO 5: LIMPIAR ESTILOS PREVIOS ---
-        // Cada vez que se envía el formulario, reseteamos el mensaje
-        // para que no queden mensajes anteriores visibles.
-        mensaje.textContent = "";
-        mensaje.className = "formulario-mensaje";
-
-        // --- PASO 6: VALIDACIÓN DE CAMPOS OBLIGATORIOS ---
-        // Verificamos que ningún campo esté vacío.
-        // Si alguno está vacío, mostramos un error y detenemos la ejecución con return.
-        if (valorUsuario === "" || valorCorreo === "" || valorPassword === "" || valorConfirmar === "") {
-            mensaje.textContent = "Todos los campos son obligatorios.";
-            return; // Detiene la función aquí, no ejecuta el código de abajo
-        }
-
-        // --- PASO 7: VALIDACIÓN DEL EMAIL CON EXPRESIÓN REGULAR (REGEX) ---
-        // Una expresión regular es un patrón que define cómo debe verse un texto.
-        // Este regex verifica que el email tenga el formato: algo@algo.algo
-        //
-        // Desglose del regex /^[^\s@]+@[^\s@]+\.[^\s@]+$/:
-        //   ^          = inicio del texto
-        //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
-        //   @          = el símbolo arroba (obligatorio)
-        //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
-        //   \.         = un punto literal (obligatorio)
-        //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
-        //   $          = fin del texto
-        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        // .test() prueba si el texto cumple con el patrón.
-        // Si NO cumple (!), mostramos error.
-        if (!regexEmail.test(valorCorreo)) {
-            mensaje.textContent = "El formato del correo electrónico no es válido.";
+        // Validación 1: Campos vacíos
+        if (!validarCamposVacios(valorUsuario, valorCorreo, valorPassword, valorConfirmar)) {
+            actualizarDOM(mensaje, "Todos los campos son obligatorios.", false);
             return;
         }
 
-        // --- PASO 8: VALIDACIÓN DE LONGITUD DE CONTRASEÑA ---
-        // .length nos da la cantidad de caracteres del texto.
-        // La contraseña debe tener al menos 8 caracteres.
-        if (valorPassword.length < 8) {
-            mensaje.textContent = "La contraseña debe tener al menos 8 caracteres.";
+        // Validación 2: Formato de email
+        if (!validarEmail(valorCorreo)) {
+            actualizarDOM(mensaje, "El formato del correo electrónico no es válido.", false);
             return;
         }
 
-        // --- PASO 9: VERIFICAR QUE AMBAS CONTRASEÑAS SEAN IGUALES ---
-        // Comparamos los dos valores con !== (distinto).
-        // Si son diferentes, mostramos error.
-        if (valorPassword !== valorConfirmar) {
-            mensaje.textContent = "Las contraseñas no coinciden.";
+        // Validación 3: Contraseña
+        var errorPassword = validarPassword(valorPassword, valorConfirmar);
+        if (errorPassword !== null) {
+            actualizarDOM(mensaje, errorPassword, false);
             return;
         }
 
-        // --- PASO 10: SI TODO ES CORRECTO, GUARDAR EN LOCALSTORAGE Y MOSTRAR ÉXITO ---
-        // Si llegamos hasta aquí, significa que todas las validaciones pasaron.
-        //
-        // localStorage.setItem("clave", "valor") guarda un dato en el almacenamiento
-        // del navegador. Este dato persiste incluso si se cierra la pestaña o el navegador.
-        //
-        // Como localStorage solo acepta strings (cadenas de texto), usamos
-        // JSON.stringify() para convertir nuestro objeto JavaScript a un string JSON.
-        //
-        // Ejemplo: { nombre: "Ivan", correo: "ivan@mail.com", password: "12345678" }
-        // Se convierte en: '{"nombre":"Ivan","correo":"ivan@mail.com","password":"12345678"}'
-        var datosUsuario = {
-            nombre: valorUsuario,
-            correo: valorCorreo,
-            password: valorPassword
-        };
+        // Si todas las validaciones pasan, crear el objeto usuario y guardarlo
+        var datosUsuario = crearObjetoUsuario(valorUsuario, valorCorreo, valorPassword);
+        guardarUsuario(datosUsuario);
 
-        localStorage.setItem("usuarioRegistrado", JSON.stringify(datosUsuario));
-
-        // Mostramos un mensaje de éxito y le agregamos la clase CSS de éxito
-        // para que se vea en color cyan (neón).
-        mensaje.textContent = "Registro exitoso. ¡Bienvenido, " + valorUsuario + "!";
-        mensaje.classList.add("formulario-mensaje-exito");
+        // Mostrar mensaje de éxito
+        actualizarDOM(mensaje, "Registro exitoso. ¡Bienvenido, " + valorUsuario + "!", true);
     });
 
 });
