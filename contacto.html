@@ -24,17 +24,24 @@
     <!-- ============ CONTENIDO DEL FORMULARIO DE CONTACTO ============ -->
     <div class="pagina-registro">
 
-        <!-- Formulario de contacto -->
+        <!-- Formulario de contacto (Nombre, Email, Mensaje) -->
+        <!-- Réplica del diseño anterior según la rúbrica -->
         <!-- El ID "contactoForm" se usa en JavaScript para capturar el evento submit -->
         <form id="contactoForm" class="formulario-contenedor">
             <h3 class="formulario-titulo">Formulario de Contacto</h3>
 
             <!-- Campo: Nombre -->
-            <input type="text" id="nombreContacto" class="formulario-campo" placeholder="Nombre" aria-label="Nombre" required>
-            <!-- Campo: Asunto -->
-            <input type="text" id="asuntoContacto" class="formulario-campo" placeholder="Asunto" aria-label="Asunto" required>
+            <!-- Cada <label> está vinculado a su <input> mediante el atributo "for" -->
+            <label for="nombreContacto" class="formulario-label">Nombre</label>
+            <input type="text" id="nombreContacto" class="formulario-campo" placeholder="Tu nombre completo" required>
+
+            <!-- Campo: Email -->
+            <label for="emailContacto" class="formulario-label">Correo Electrónico</label>
+            <input type="email" id="emailContacto" class="formulario-campo" placeholder="ejemplo@correo.com" required>
+
             <!-- Campo: Mensaje (textarea con contador de caracteres) -->
-            <textarea id="mensajeContacto" class="formulario-campo formulario-textarea" placeholder="Escribe tu mensaje..." aria-label="Mensaje" required></textarea>
+            <label for="mensajeContacto" class="formulario-label">Mensaje</label>
+            <textarea id="mensajeContacto" class="formulario-campo formulario-textarea" placeholder="Escribe tu mensaje..." required></textarea>
             <!-- Contador de caracteres: se actualiza dinámicamente con JavaScript -->
             <p id="contadorCaracteres" class="formulario-contador">0 caracteres</p>
 

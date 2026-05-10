@@ -17,12 +17,7 @@
     <!-- Enlace a la hoja de estilos CSS -->
     <link rel="stylesheet" href="css/styles.css">
 
-    <!-- jQuery (librería base necesaria para Slick Carousel) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Slick Carousel: CSS principal y tema visual -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
 </head>
 
 <body>
@@ -64,78 +59,48 @@
             <h1>Trucos y Claves de Videojuegos</h1>
             <p>Los mejores códigos secretos para desbloquear todo en tus juegos favoritos.</p>
 
-            <!-- ============ CARRUSEL EN EL HEADER / BANNER ============ -->
-            <!-- El carrusel está integrado dentro del banner para que sea
-                 lo primero que el usuario vea al entrar a la página -->
+            <!-- ============ CARRUSEL DE IMÁGENES (JavaScript Puro) ============ -->
+            <!-- El carrusel muestra 3 imágenes representativas del tema.
+                 Los botones "Anterior" y "Siguiente" modifican el DOM
+                 dinámicamente cambiando atributos y clases de los slides. -->
             <div class="carrusel-header">
-                <div class="carrusel-slick">
+                <div class="carrusel-contenedor" id="carruselContenedor">
 
-                    <!-- Slide 1: Usuario-ROot.png -->
-                    <div class="carrusel-slide">
-                        <div class="carrusel-slide-inner">
-                            <img src="imagenes/iconos o logo/Usuario-ROot.png" alt="Hacker Root - Terminal">
-                            <div class="carrusel-caption">
-                                <h3>#root</h3>
-                                <p>Acceso total al sistema</p>
-                            </div>
+                    <!-- Slide 1: Hacker Root -->
+                    <div class="carrusel-slide activo">
+                        <img src="imagenes/iconos o logo/Usuario-ROot.png" alt="Hacker Root - Acceso total al sistema">
+                        <div class="carrusel-caption">
+                            <h3>#root</h3>
+                            <p>Acceso total al sistema</p>
                         </div>
                     </div>
 
-                    <!-- Slide 2: hackerman.ico -->
+                    <!-- Slide 2: Hackerman -->
                     <div class="carrusel-slide">
-                        <div class="carrusel-slide-inner">
-                            <img src="imagenes/iconos o logo/hackerman.ico" alt="Hackerman - Ícono">
-                            <div class="carrusel-caption">
-                                <h3>HACKERMAN</h3>
-                                <p>El hacker definitivo</p>
-                            </div>
+                        <img src="imagenes/iconos o logo/hackerman.ico" alt="Hackerman - El hacker definitivo">
+                        <div class="carrusel-caption">
+                            <h3>HACKERMAN</h3>
+                            <p>El hacker definitivo</p>
                         </div>
                     </div>
 
-                    <!-- Slide 3: Usuario-ROot.png -->
+                    <!-- Slide 3: Gaming Controller -->
                     <div class="carrusel-slide">
-                        <div class="carrusel-slide-inner">
-                            <img src="imagenes/iconos o logo/Usuario-ROot.png" alt="Hacker Root - Consola">
-                            <div class="carrusel-caption">
-                                <h3>sudo rm -rf /</h3>
-                                <p>El poder absoluto del terminal</p>
-                            </div>
+                        <img src="imagenes/iconos o logo/gaming-controller.png" alt="Gaming Controller - Controles de videojuegos">
+                        <div class="carrusel-caption">
+                            <h3>GAME ON</h3>
+                            <p>Los mejores trucos a tu alcance</p>
                         </div>
                     </div>
 
-                    <!-- Slide 4: hackerman.ico -->
-                    <div class="carrusel-slide">
-                        <div class="carrusel-slide-inner">
-                            <img src="imagenes/iconos o logo/hackerman.ico" alt="Hackerman - Seguridad">
-                            <div class="carrusel-caption">
-                                <h3>FIREWALL BYPASS</h3>
-                                <p>Sin barreras para el hacker</p>
-                            </div>
-                        </div>
-                    </div>
+                </div>
 
-                    <!-- Slide 5: Usuario-ROot.png -->
-                    <div class="carrusel-slide">
-                        <div class="carrusel-slide-inner">
-                            <img src="imagenes/iconos o logo/Usuario-ROot.png" alt="Hacker Root - Código">
-                            <div class="carrusel-caption">
-                                <h3>chmod 777</h3>
-                                <p>Permisos sin límites</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 6: hackerman.ico -->
-                    <div class="carrusel-slide">
-                        <div class="carrusel-slide-inner">
-                            <img src="imagenes/iconos o logo/hackerman.ico" alt="Hackerman - Matrix">
-                            <div class="carrusel-caption">
-                                <h3>HACK THE PLANET</h3>
-                                <p>La red es nuestro territorio</p>
-                            </div>
-                        </div>
-                    </div>
-
+                <!-- Botones de navegación del carrusel -->
+                <!-- Estos botones ejecutan funciones JS que modifican el DOM -->
+                <div class="carrusel-controles">
+                    <button type="button" class="carrusel-boton" id="btnAnterior">&#9664; Anterior</button>
+                    <span class="carrusel-indicador" id="carruselIndicador">1 / 3</span>
+                    <button type="button" class="carrusel-boton" id="btnSiguiente">Siguiente &#9654;</button>
                 </div>
             </div>
         </section>
@@ -257,11 +222,9 @@
 
     <!-- ============ SCRIPTS ============ -->
 
-    <!-- Slick Carousel: Plugin de jQuery para crear carruseles -->
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
-    <!-- Script de inicialización del carrusel y sistema de sesión -->
+    <!-- Script del carrusel (JavaScript puro, sin librerías externas) -->
     <script src="js/carrusel.js"></script>
+    <!-- Script del sistema de sesión (bienvenida y logout) -->
     <script src="js/sesion.js"></script>
 
 </body>

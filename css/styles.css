@@ -562,7 +562,7 @@ footer p {
 }
 
 /* ==========================================================================
-   CARRUSEL DE IMÁGENES (Slick Carousel) - Integrado en el Header/Banner
+   CARRUSEL DE IMÁGENES (JavaScript Puro) - Integrado en el Header/Banner
    ========================================================================== */
 /* Contenedor del carrusel dentro del banner.
    z-index: 1 para que aparezca sobre el fondo radial del banner. */
@@ -574,9 +574,9 @@ footer p {
     z-index: 1;
 }
 
-/* Contenedor principal del carrusel Slick.
-   Definimos un ancho máximo para que no ocupe toda la pantalla. */
-.carrusel-slick {
+/* Contenedor principal del carrusel.
+   Posición relativa para que los slides absolutos se posicionen dentro. */
+.carrusel-contenedor {
     max-width: 800px;
     margin: 0 auto;
     border-radius: 12px;
@@ -584,16 +584,31 @@ footer p {
     border: 2px solid var(--border-color);
     box-shadow: 0 0 30px rgba(0, 243, 255, 0.15),
                 0 0 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    height: 400px;
 }
 
-/* Cada slide individual dentro del carrusel */
-.carrusel-slide-inner {
-    position: relative;
-    overflow: hidden;
+/* Cada slide individual dentro del carrusel.
+   Por defecto están ocultos (opacity: 0) y se muestran con la clase "activo".
+   Todos están posicionados en el mismo lugar (position: absolute). */
+.carrusel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+/* Clase "activo": JavaScript la agrega/quita dinámicamente para
+   mostrar u ocultar cada slide modificando el DOM. */
+.carrusel-slide.activo {
+    opacity: 1;
 }
 
 /* Imagen del slide: ocupa todo el ancho del contenedor */
-.carrusel-slide-inner img {
+.carrusel-slide img {
     width: 100%;
     height: 400px;
     object-fit: cover;        /* Recorta la imagen para llenar el espacio sin distorsionar */
@@ -603,7 +618,7 @@ footer p {
 }
 
 /* Al pasar el mouse, la imagen se ilumina ligeramente */
-.carrusel-slide-inner:hover img {
+.carrusel-slide:hover img {
     filter: brightness(1) contrast(1.2);
 }
 
@@ -634,57 +649,44 @@ footer p {
     font-style: italic;
 }
 
-/* ---------- Personalización de las flechas de Slick ---------- */
-/* Slick genera automáticamente botones .slick-prev y .slick-next.
-   Aquí les damos el estilo neón del tema cyberpunk. */
-.carrusel-slick .slick-prev,
-.carrusel-slick .slick-next {
-    width: 45px;
-    height: 45px;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    border: 1px solid rgba(0, 243, 255, 0.3);
-    transition: all 0.3s ease;
+/* ---------- Controles del carrusel (Anterior / Siguiente) ---------- */
+/* Contenedor de los botones de navegación y el indicador de posición */
+.carrusel-controles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.carrusel-slick .slick-prev { left: 15px; }
-.carrusel-slick .slick-next { right: 15px; }
+/* Botones "Anterior" y "Siguiente" con estilo neón cyberpunk */
+.carrusel-boton {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    color: var(--neon-cyan);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-.carrusel-slick .slick-prev:hover,
-.carrusel-slick .slick-next:hover {
+.carrusel-boton:hover {
     background: rgba(0, 243, 255, 0.2);
     border-color: var(--neon-cyan);
     box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+    text-shadow: 0 0 5px var(--neon-cyan);
 }
 
-/* Las flechas internas de Slick (::before) */
-.carrusel-slick .slick-prev::before,
-.carrusel-slick .slick-next::before {
-    font-size: 22px;
-    color: var(--neon-cyan);
-    opacity: 1;
-}
-
-/* ---------- Personalización de los puntos (dots) de Slick ---------- */
-/* Slick genera una lista de puntos para navegar entre slides.
-   Los personalizamos para que tengan efecto neón. */
-.carrusel-slick .slick-dots {
-    bottom: -40px;
-}
-
-.carrusel-slick .slick-dots li button::before {
-    font-size: 10px;
+/* Indicador de posición del slide (ej: "1 / 3") */
+.carrusel-indicador {
+    font-family: var(--font-heading);
+    font-size: 1rem;
     color: var(--text-muted);
-    opacity: 0.5;
-    transition: all 0.3s ease;
-}
-
-/* Punto activo: brilla en cyan neón */
-.carrusel-slick .slick-dots li.slick-active button::before {
-    color: var(--neon-cyan);
-    opacity: 1;
-    text-shadow: 0 0 8px var(--neon-cyan);
+    letter-spacing: 2px;
 }
 
 /* ==========================================================================
@@ -719,12 +721,21 @@ footer p {
     }
 
     /* Carrusel responsive */
-    .carrusel-slide-inner img {
+    .carrusel-contenedor {
+        height: 250px;
+    }
+
+    .carrusel-slide img {
         height: 250px;
     }
 
     .carrusel-caption h3 {
         font-size: 1.3rem;
+    }
+
+    .carrusel-boton {
+        font-size: 0.7rem;
+        padding: 8px 12px;
     }
 
     .barra-bienvenida {

@@ -24,15 +24,19 @@
     <!-- ============ CONTENIDO DEL LOGIN ============ -->
     <div class="pagina-registro">
 
-        <!-- Formulario de login -->
+        <!-- Formulario de login (acceso de usuarios registrados) -->
         <!-- El ID "loginForm" se usa en JavaScript para capturar el evento submit -->
         <form id="loginForm" class="formulario-contenedor">
             <h3 class="formulario-titulo">Iniciar Sesión</h3>
 
             <!-- Campo: Email -->
-            <input type="email" id="correoLogin" class="formulario-campo" placeholder="Correo electrónico" aria-label="Correo electrónico" required>
+            <!-- Cada <label> está vinculado a su <input> mediante el atributo "for" -->
+            <label for="correoLogin" class="formulario-label">Correo Electrónico</label>
+            <input type="email" id="correoLogin" class="formulario-campo" placeholder="ejemplo@correo.com" required>
+
             <!-- Campo: Contraseña -->
-            <input type="password" id="passwordLogin" class="formulario-campo" placeholder="Contraseña" aria-label="Contraseña" required>
+            <label for="passwordLogin" class="formulario-label">Contraseña</label>
+            <input type="password" id="passwordLogin" class="formulario-campo" placeholder="Tu contraseña" required>
 
             <button type="submit" class="formulario-boton">Ingresar</button>
 

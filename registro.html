@@ -24,19 +24,27 @@
     <!-- ============ CONTENIDO DEL REGISTRO ============ -->
     <div class="pagina-registro">
 
-        <!-- Formulario de registro -->
+        <!-- Formulario de inscripción (registro de nuevos usuarios) -->
         <!-- El ID "registroForm" se usa en JavaScript para capturar el evento submit -->
         <form id="registroForm" class="formulario-contenedor">
             <h3 class="formulario-titulo">Registro de Usuario</h3>
 
             <!-- Campo: Usuario -->
-            <input type="text" id="usuario" class="formulario-campo" placeholder="Usuario" aria-label="Usuario" required>
+            <!-- Cada <label> está vinculado a su <input> mediante el atributo "for" -->
+            <label for="usuario" class="formulario-label">Usuario</label>
+            <input type="text" id="usuario" class="formulario-campo" placeholder="Ingresa tu usuario" required>
+
             <!-- Campo: Email -->
-            <input type="email" id="correoRegistro" class="formulario-campo" placeholder="Correo electrónico" aria-label="Correo electrónico" required>
+            <label for="correoRegistro" class="formulario-label">Correo Electrónico</label>
+            <input type="email" id="correoRegistro" class="formulario-campo" placeholder="ejemplo@correo.com" required>
+
             <!-- Campo: Contraseña -->
-            <input type="password" id="passwordRegistro" class="formulario-campo" placeholder="Contraseña" aria-label="Contraseña" required>
+            <label for="passwordRegistro" class="formulario-label">Contraseña</label>
+            <input type="password" id="passwordRegistro" class="formulario-campo" placeholder="Mínimo 8 caracteres" required>
+
             <!-- Campo: Confirmación de Contraseña -->
-            <input type="password" id="confirmarPassword" class="formulario-campo" placeholder="Confirmar contraseña" aria-label="Confirmar contraseña" required>
+            <label for="confirmarPassword" class="formulario-label">Confirmar Contraseña</label>
+            <input type="password" id="confirmarPassword" class="formulario-campo" placeholder="Repite tu contraseña" required>
 
             <button type="submit" class="formulario-boton">Registrarse</button>
 
