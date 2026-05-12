@@ -29,10 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // --- FUNCIÓN: validarEmail() ---
-    // Verifica que el correo tenga formato válido usando regex.
+    // Verifica que el correo tenga formato válido y dominio válido usando regex.
+    // El dominio debe tener al menos 2 caracteres y la extensión al menos 2 letras.
+    // Ejemplos válidos:   usuario@gmail.com, test@correo.cl
+    // Ejemplos inválidos: usuario@.com, usuario@a.s, usuario@correo.x
     // Retorna true si es válido, false si no.
     function validarEmail(correoValor) {
-        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var regexEmail = /^[^\s@]+@[^\s@]{2,}\.[a-zA-Z]{2,}$/;
         return regexEmail.test(correoValor);
     }
 

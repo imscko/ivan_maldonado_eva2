@@ -37,34 +37,55 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // --- FUNCIÓN: validarEmail() ---
-    // Verifica que el correo electrónico tenga un formato válido.
+    // Verifica que el correo electrónico tenga un formato válido
+    // y que el dominio sea válido.
     // Usa una expresión regular (regex) para validar el patrón.
     //
-    // Desglose del regex /^[^\s@]+@[^\s@]+\.[^\s@]+$/:
-    //   ^          = inicio del texto
-    //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
-    //   @          = el símbolo arroba (obligatorio)
-    //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
-    //   \.         = un punto literal (obligatorio)
-    //   [^\s@]+    = uno o más caracteres que NO sean espacio ni @
-    //   $          = fin del texto
+    // Desglose del regex /^[^\s@]+@[^\s@]{2,}\.[a-zA-Z]{2,}$/:
+    //   ^            = inicio del texto
+    //   [^\s@]+      = uno o más caracteres que NO sean espacio ni @ (parte local)
+    //   @            = el símbolo arroba (obligatorio)
+    //   [^\s@]{2,}   = dos o más caracteres que NO sean espacio ni @ (nombre del dominio)
+    //   \.           = un punto literal (obligatorio)
+    //   [a-zA-Z]{2,} = dos o más LETRAS (extensión del dominio, ej: .com, .cl, .org)
+    //   $            = fin del texto
+    //
+    // Ejemplos válidos:   usuario@gmail.com, test@correo.cl
+    // Ejemplos inválidos: usuario@.com, usuario@a.s, usuario@correo.x
     //
     // Retorna true si el formato es válido, false si no lo es.
     function validarEmail(correoValor) {
-        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var regexEmail = /^[^\s@]+@[^\s@]{2,}\.[a-zA-Z]{2,}$/;
         return regexEmail.test(correoValor);
     }
 
     // --- FUNCIÓN: validarPassword() ---
     // Verifica que la contraseña cumpla con los requisitos de seguridad:
     // 1. Debe tener al menos 8 caracteres
-    // 2. Debe coincidir con la confirmación
+    // 2. Debe contener al menos una letra mayúscula (A-Z)
+    // 3. Debe contener al menos un carácter especial (. , ; : ! ? @ # $ % & * - _)
+    // 4. Debe coincidir con la confirmación
     //
     // Retorna null si no hay error, o un string con el mensaje de error.
     function validarPassword(valorPassword, valorConfirmar) {
         if (valorPassword.length < 8) {
             return "La contraseña debe tener al menos 8 caracteres.";
         }
+
+        // Validar que contenga al menos una letra mayúscula
+        // Regex /[A-Z]/ busca cualquier letra mayúscula en el texto
+        var regexMayuscula = /[A-Z]/;
+        if (!regexMayuscula.test(valorPassword)) {
+            return "La contraseña debe contener al menos una letra mayúscula.";
+        }
+
+        // Validar que contenga al menos un carácter especial
+        // Regex busca al menos uno de estos caracteres: . , ; : ! ? @ # $ % & * - _
+        var regexEspecial = /[.,;:!?@#$%&*\-_]/;
+        if (!regexEspecial.test(valorPassword)) {
+            return "La contraseña debe contener al menos un caracter especial(. , ; : ! ? @ # $ % & * - _).";
+        }
+
         if (valorPassword !== valorConfirmar) {
             return "Las contraseñas no coinciden.";
         }
